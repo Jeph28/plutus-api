@@ -1,5 +1,5 @@
 {
-    "name": "financial-api",
+    "name": "plutus-api",
     "version": "1.0.0",
     "scripts": {
         "start": "node dist/app.js",
@@ -9,7 +9,8 @@
         "watch-ts": "tsc -w",
         "watch-node": "nodemon --quiet dist/src/app.js",
         "lint": "eslint . --ext .ts",
-        "test": "jest"
+        "test": "jest",
+        "test:watch": "jest --watch"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
