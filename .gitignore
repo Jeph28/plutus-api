@@ -217,6 +217,9 @@ $RECYCLE.BIN/
 
 # .env
 .env
+.env.development
+.env.test
+.env.production
 
 # Dist
 dist
