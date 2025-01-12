@@ -2,12 +2,12 @@
     "name": "plutus-api",
     "version": "1.0.0",
     "scripts": {
-        "start": "node dist/app.js",
+        "start": "doppler run -- node app/dist/app.js",
         "dev": "pnpm build && pnpm watch",
         "build": "tsc",
         "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"pnpm watch-ts\" \"pnpm watch-node\"",
         "watch-ts": "tsc -w",
-        "watch-node": "nodemon --quiet dist/src/app.js",
+        "watch-node": "doppler run -- nodemon --quiet dist/src/app.js",
         "lint": "eslint . --ext .ts",
         "test": "jest",
         "test:watch": "jest --watch"
