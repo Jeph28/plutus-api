@@ -27,12 +27,12 @@ class App {
   }
 
   private routes(): void {
-    this.app.use('/api/v1', routes);
+    this.app.use('/v1', routes);
   }
 
   private mongoSetup(): void {
     database.connect();
-    mongoose.connection.on('error', (error) => {
+    mongoose.connection.on('error', (error: Error) => {
       console.error('MongoDB connection error:', error);
     });
     mongoose.connection.on('disconnected', () => {

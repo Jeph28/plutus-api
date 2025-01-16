@@ -3,7 +3,7 @@
     "target": "ES2020",
     "module": "commonjs",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": ".",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -11,10 +11,12 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["node"],
     "paths": {
       "*": ["node_modules/*"]
     }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
-} 
+}

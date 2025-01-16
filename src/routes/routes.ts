@@ -8,7 +8,7 @@ import authRoutes from './auth.routes';
 
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/health', (req, res) => {
   res.status(200).json({
     message: 'welcome to my server v1',
   });

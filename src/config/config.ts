@@ -1,7 +1,3 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
-
 export default {
   databaseURI: process.env.MONGODB_URI,
   databaseName: process.env.DB_NAME,
