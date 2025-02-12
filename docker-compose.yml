@@ -1,4 +1,3 @@
-
 services:
   traefik:
     image: traefik:v2.10
@@ -8,12 +7,19 @@ services:
       - '--providers.docker.exposedbydefault=false'
       - '--entrypoints.web.address=:80'
       - '--entrypoints.websecure.address=:443'
+      - '--entrypoints.web.http.redirections.entryPoint.to=websecure'
+      - '--entrypoints.web.http.redirections.entryPoint.scheme=https'
+      - '--certificatesresolvers.letsencrypt.acme.httpchallenge=true'
+      - '--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web'
+      - '--certificatesresolvers.letsencrypt.acme.email=${{ secrets.ACME_EMAIL }}'
+      - '--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json'
     ports:
       - '80:80'
       - '443:443'
       - '8080:8080' # Dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
     networks:
       - traefik-public
     restart: unless-stopped

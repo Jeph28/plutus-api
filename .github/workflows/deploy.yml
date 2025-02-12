@@ -1,0 +1,54 @@
+name: Deploy to Production
+
+on:
+  workflow_run:
+    workflows: ["Build and Push"]
+    types:
+      - completed
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  deploy:
+    runs-on: raspberrypi
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    
+    steps:
+      - name: Check for existing Traefik container
+        id: check_traefik
+        run: |
+          if docker ps --format '{{.Names}}' | grep -q '^traefik$'; then
+            echo "TRAEFIK_EXISTS=true" >> $GITHUB_OUTPUT
+          else
+            echo "TRAEFIK_EXISTS=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy Traefik (if not exists)
+        if: steps.check_traefik.outputs.TRAEFIK_EXISTS == 'false'
+        run: |
+          docker network create -d bridge traefik-public || true
+          docker compose -f docker-compose.yml up -d
+
+      - name: Deploy to production server
+        run: |
+          # Pull the latest image
+          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+
+          # Stop and remove the existing container if it exists
+          docker stop plutus || true
+          docker rm plutus || true
+
+          # Run the new container
+          docker run -d \
+            --name plutus \
+            --network traefik-public \
+            -e DOPPLER_TOKEN="${{ secrets.DOPPLER_TOKEN }}" \
+            --label "traefik.enable=true" \
+            --label "traefik.http.routers.api.rule=Host(\`${{ secrets.DOMAIN }}\`)" \
+            --label "traefik.http.routers.api.entrypoints=web" \
+            --label "traefik.http.services.api.loadbalancer.server.port=3000" \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
