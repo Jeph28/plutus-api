@@ -12,7 +12,7 @@ env:
 
 jobs:
   build-and-push:
-    runs-on: raspberrypi
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
