@@ -27,6 +27,7 @@ export class AccountController {
 
   public async getAll(req: Request, res: Response): Promise<void> {
     try {
+      //get all accounts for the user
       const accounts = await Account.find({ user: req.user?.id });
       res.json(accounts);
     } catch (error) {
