@@ -1,5 +1,5 @@
 {
-  "name": "plutus-api1",
+  "name": "plutus-api",
   "version": "1.0.0",
   "scripts": {
     "start": "doppler run -- node dist/src/app.js",
