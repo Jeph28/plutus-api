@@ -14,7 +14,7 @@ env:
 
 jobs:
   deploy:
-    runs-on: raspberrypi
+    runs-on: self-hosted
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     
     steps:
@@ -48,7 +48,7 @@ jobs:
             --network traefik-public \
             -e DOPPLER_TOKEN="${{ secrets.DOPPLER_TOKEN }}" \
             --label "traefik.enable=true" \
-            --label "traefik.http.routers.api.rule=Host(\`${{ secrets.DOMAIN }}\`)" \
+            --label "traefik.http.routers.api.rule=Host(`api.localhost`)" \
             --label "traefik.http.routers.api.entrypoints=web" \
             --label "traefik.http.services.api.loadbalancer.server.port=3000" \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
