@@ -58,6 +58,9 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:3000/v1/health || exit 1
 
-USER node
+# Run as non-root user
+RUN groupadd -r jeph && useradd -r -g jeph jeph
+RUN chown -R jeph:jeph /app
+USER jeph
 
 CMD ["doppler", "run", "--", "node", "dist/src/app.js"]

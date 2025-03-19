@@ -23,4 +23,6 @@ docker build -t plutus-api:latest .
 docker run -e DOPPLER_TOKEN="" --name prod -p 3000:3000 plutus-api
 
 # Run container with Traefik
-docker run -d --name plutus --network traefik-public -e DOPPLER_TOKEN="" --label "traefik.enable=true" --label 'traefik.http.routers.api.rule=Host(`api.localhost`)' --label "traefik.http.routers.api.entrypoints=web" --label "traefik.http.services.api.loadbalancer.server.port=3000" plutus:latest
+docker run -d --name plutus --rm --network traefik-public -e DOPPLER_TOKEN="" --label "traefik.enable=true" --label 'traefik.http.routers.api.rule=Host(`api.localhost`)' --label "traefik.http.routers.api.entrypoints=web" --label "traefik.http.services.api.loadbalancer.server.port=3000" plutus:latest
+
+# http://api.localhost:3000/v1/health
