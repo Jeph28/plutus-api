@@ -30,7 +30,6 @@ jobs:
       - name: Deploy Traefik (if not exists)
         if: steps.check_traefik.outputs.TRAEFIK_EXISTS == 'false'
         run: |
-          docker network create -d bridge traefik-public || true
           docker compose -f docker-compose.yml up -d
 
       - name: Deploy to production server
