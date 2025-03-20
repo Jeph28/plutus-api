@@ -34,7 +34,7 @@ jobs:
       - name: Deploy to production server
         run: |
           # Pull the latest image
-          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+          docker pull ${{ env.REGISTRY }}/plutus:main
 
           # Stop and remove the existing container if it exists
           docker stop plutus || true
@@ -49,4 +49,4 @@ jobs:
             --label "traefik.http.routers.api.rule=Host(`api.localhost`)" \
             --label "traefik.http.routers.api.entrypoints=web" \
             --label "traefik.http.services.api.loadbalancer.server.port=3000" \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+            ${{ env.REGISTRY }}/plutus:main
