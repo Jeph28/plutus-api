@@ -33,8 +33,9 @@ jobs:
 
       - name: Deploy to production server
         run: |
-          # Define la imagen completa
-          IMAGE_TAG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main"
+          # Define la imagen completa y convierte el nombre del repositorio a minúsculas
+          REPO_LOWERCASE=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          IMAGE_TAG="${{ env.REGISTRY }}/$REPO_LOWERCASE:main"
 
           # Pull the latest image
           docker pull $IMAGE_TAG
