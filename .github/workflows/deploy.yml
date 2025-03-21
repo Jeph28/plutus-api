@@ -49,4 +49,4 @@ jobs:
             --label "traefik.http.routers.api.rule=Host(`api.localhost`)" \
             --label "traefik.http.routers.api.entrypoints=web" \
             --label "traefik.http.services.api.loadbalancer.server.port=3000" \
-            ${{ env.REGISTRY }}/plutus:main
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
