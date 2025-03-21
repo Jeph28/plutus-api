@@ -2,7 +2,7 @@ name: Deploy to Production
 
 on:
   workflow_run:
-    workflows: ["Build and Push"]
+    workflows: ['Build and Push']
     types:
       - completed
     branches:
@@ -15,7 +15,7 @@ env:
 jobs:
   deploy:
     runs-on: self-hosted
-    
+
     steps:
       - name: Check for existing Traefik container
         id: check_traefik
@@ -33,8 +33,11 @@ jobs:
 
       - name: Deploy to production server
         run: |
+          # Define la imagen completa
+          IMAGE_TAG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main"
+
           # Pull the latest image
-          docker pull ${{ env.REGISTRY }}/plutus:main
+          docker pull $IMAGE_TAG
 
           # Stop and remove the existing container if it exists
           docker stop plutus || true
@@ -49,4 +52,4 @@ jobs:
             --label "traefik.http.routers.api.rule=Host(`api.localhost`)" \
             --label "traefik.http.routers.api.entrypoints=web" \
             --label "traefik.http.services.api.loadbalancer.server.port=3000" \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+            $IMAGE_TAG
